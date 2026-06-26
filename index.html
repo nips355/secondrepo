@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Floating Images</title>
 
-  <!-- Favicon -->
   <link rel="icon" type="image/webp" href="images.webp" />
 
   <style>
@@ -19,65 +18,69 @@
       min-height: 100vh;
       background: linear-gradient(135deg, #ffe6f2, #ffffff, #fff1cc);
       font-family: Arial, sans-serif;
-      overflow-x: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      overflow: hidden;
     }
 
-    .container {
-      width: 100%;
-      min-height: 100vh;
+    .page {
       position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 60px;
-      flex-wrap: wrap;
-      padding: 40px;
+      width: 100vw;
+      height: 100vh;
     }
 
     .floating-img {
-      width: 230px;
-      height: 230px;
-      object-fit: cover;
-      border-radius: 25px;
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      object-fit: contain;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 28px;
       cursor: pointer;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
       animation: float 3s ease-in-out infinite;
-      z-index: 1;
-    }
-
-    .floating-img:nth-child(2) {
-      animation-delay: 0.5s;
-    }
-
-    .floating-img:nth-child(3) {
-      animation-delay: 1s;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      z-index: 2;
     }
 
     .floating-img:hover {
-      transform: scale(1.08);
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.32);
+    }
+
+    .img-one {
+      top: 18%;
+      left: 8%;
+      animation-delay: 0s;
+    }
+
+    .img-two {
+      top: 55%;
+      left: 40%;
+      animation-delay: 0.6s;
+    }
+
+    .img-three {
+      top: 24%;
+      right: 9%;
+      animation-delay: 1.2s;
     }
 
     .floating-img.expanded {
       position: fixed;
       top: 50%;
       left: 50%;
-      width: 70vw;
-      height: 70vh;
-      max-width: 700px;
-      max-height: 700px;
-      transform: translate(-50%, -50%) scale(1);
+      right: auto;
+      width: 75vw;
+      height: 75vh;
+      max-width: 850px;
+      max-height: 850px;
       object-fit: contain;
-      border-radius: 30px;
       background: white;
-      padding: 12px;
-      z-index: 1000;
+      padding: 18px;
+      border-radius: 30px;
       animation: none;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      box-shadow: 0 35px 90px rgba(0, 0, 0, 0.55);
     }
 
     .overlay {
@@ -97,26 +100,37 @@
         transform: translateY(0);
       }
       50% {
-        transform: translateY(-25px);
+        transform: translateY(-28px);
       }
       100% {
         transform: translateY(0);
       }
     }
 
-    @media (max-width: 768px) {
-      .container {
-        gap: 35px;
+    @media (max-width: 800px) {
+      .floating-img {
+        width: 170px;
+        height: 170px;
       }
 
-      .floating-img {
-        width: 180px;
-        height: 180px;
+      .img-one {
+        top: 12%;
+        left: 8%;
+      }
+
+      .img-two {
+        top: 45%;
+        left: 30%;
+      }
+
+      .img-three {
+        top: 68%;
+        right: 8%;
       }
 
       .floating-img.expanded {
-        width: 85vw;
-        height: 65vh;
+        width: 88vw;
+        height: 70vh;
       }
     }
   </style>
@@ -125,11 +139,11 @@
 <body>
   <div class="overlay" id="overlay"></div>
 
-  <div class="container">
-    <img src="IMG_9555.jpg" alt="Floating Image 1" class="floating-img" />
-    <img src="jeremy.png" alt="Floating Image 2" class="floating-img" />
-    <img src="jeremy2.png" alt="Floating Image 3" class="floating-img" />
-  </div>
+  <main class="page">
+    <img src="IMG_9555.jpg" alt="Floating Image 1" class="floating-img img-one" />
+    <img src="jeremy.png" alt="Floating Image 2" class="floating-img img-two" />
+    <img src="jeremy2.png" alt="Floating Image 3" class="floating-img img-three" />
+  </main>
 
   <script>
     const images = document.querySelectorAll(".floating-img");
@@ -137,12 +151,12 @@
 
     images.forEach((img) => {
       img.addEventListener("click", () => {
-        const isExpanded = img.classList.contains("expanded");
+        const alreadyExpanded = img.classList.contains("expanded");
 
         images.forEach((image) => image.classList.remove("expanded"));
         overlay.classList.remove("active");
 
-        if (!isExpanded) {
+        if (!alreadyExpanded) {
           img.classList.add("expanded");
           overlay.classList.add("active");
         }
