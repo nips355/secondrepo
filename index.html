@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Floating Images</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/webp" href="images.webp" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffe6f2, #ffffff, #fff1cc);
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 60px;
+      flex-wrap: wrap;
+      padding: 40px;
+    }
+
+    .floating-img {
+      width: 230px;
+      height: 230px;
+      object-fit: cover;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      animation: float 3s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    .floating-img:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+
+    .floating-img:nth-child(3) {
+      animation-delay: 1s;
+    }
+
+    .floating-img:hover {
+      transform: scale(1.08);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+    }
+
+    .floating-img.expanded {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 70vw;
+      height: 70vh;
+      max-width: 700px;
+      max-height: 700px;
+      transform: translate(-50%, -50%) scale(1);
+      object-fit: contain;
+      border-radius: 30px;
+      background: white;
+      padding: 12px;
+      z-index: 1000;
+      animation: none;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 999;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-25px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        gap: 35px;
+      }
+
+      .floating-img {
+        width: 180px;
+        height: 180px;
+      }
+
+      .floating-img.expanded {
+        width: 85vw;
+        height: 65vh;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay" id="overlay"></div>
+
+  <div class="container">
+    <img src="IMG_9555.jpg" alt="Floating Image 1" class="floating-img" />
+    <img src="jeremy.png" alt="Floating Image 2" class="floating-img" />
+    <img src="jeremy2.png" alt="Floating Image 3" class="floating-img" />
+  </div>
+
+  <script>
+    const images = document.querySelectorAll(".floating-img");
+    const overlay = document.getElementById("overlay");
+
+    images.forEach((img) => {
+      img.addEventListener("click", () => {
+        const isExpanded = img.classList.contains("expanded");
+
+        images.forEach((image) => image.classList.remove("expanded"));
+        overlay.classList.remove("active");
+
+        if (!isExpanded) {
+          img.classList.add("expanded");
+          overlay.classList.add("active");
+        }
+      });
+    });
+
+    overlay.addEventListener("click", () => {
+      images.forEach((img) => img.classList.remove("expanded"));
+      overlay.classList.remove("active");
+    });
+  </script>
+</body>
+</html>
